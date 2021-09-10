@@ -47,5 +47,36 @@ namespace LearningMVC3_MySQL.Controllers
 
         }
 
+        public void EditPersonView(ApplicationDbContext context, PersonViewModel personViewModel)
+        {
+            Person pax = new Person
+            {
+                Id = personViewModel.Id,
+                FirstName = personViewModel.FirstName,
+                LastName = personViewModel.LastName
+            };
+            Adress adress = new Adress
+            {
+                Id = pax.AdressId,
+                Street = personViewModel.Street,
+                City = personViewModel.City
+            };
+            Pet pet = new Pet
+            {
+                Id = pax.PetId,
+                Type = personViewModel.Type,
+                Name = personViewModel.Name
+            };
+
+            context.Update(adress);
+            context.Update(pet);
+            context.SaveChanges();
+
+
+            pax.AdressId = adress.Id;
+            pax.PetId = pet.Id;
+            context.Update(pax);
+            context.SaveChanges();
+        }
     }
 }
