@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LearningMVC3_MySQL.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics;
 
 namespace LearningMVC3_MySQL.Controllers
 {
@@ -15,7 +16,7 @@ namespace LearningMVC3_MySQL.Controllers
     public class PersonViewModelController : Controller
     {
         private readonly ApplicationDbContext context;
-        
+
         public PersonViewModelController(ApplicationDbContext context)
         {
             this.context = context;
@@ -40,7 +41,7 @@ namespace LearningMVC3_MySQL.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("FirstName, LastName, Street, City, Type, Name")] PersonViewModel person)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var test = person; //Debug
                 Person pax = new Person
@@ -76,7 +77,7 @@ namespace LearningMVC3_MySQL.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -95,7 +96,7 @@ namespace LearningMVC3_MySQL.Controllers
                 Name = pet.Name
             };
 
-            if(person == null)
+            if (person == null)
             {
                 return NotFound();
             }
@@ -108,7 +109,7 @@ namespace LearningMVC3_MySQL.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit([Bind("Id,FirstName, LastName, Street, City, Type, Name")] PersonViewModel personViewModel)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 Person pax = new Person
                 {
@@ -170,6 +171,52 @@ namespace LearningMVC3_MySQL.Controllers
                 return NotFound();
             }
             return View(personViewModel);
+        }
+        
+        public IActionResult Delete(int? id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+            Person p = context.Persons.Find(id);
+            if(p == null)
+            {
+                return BadRequest();
+            }
+            Adress adress = context.Adresses.Find(p.AdressId);
+            Pet pet = context.Pets.Find(p.PetId);
+
+            var pvm = new PersonViewModel
+            {
+                Id = p.Id,
+                FirstName = p.FirstName,
+                LastName = p.LastName,
+                Street = adress.Street,
+                City = adress.City,
+                Type = pet.Type,
+                Name = pet.Name
+            };
+
+            return View(pvm);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+
+            var pax = context.Persons.Find(id);
+            var adress = context.Adresses.Find(pax.AdressId);
+            var pet = context.Pets.Find(pax.PetId);
+
+            context.Persons.Remove(pax);
+            context.SaveChanges();
+            context.Adresses.Remove(adress);
+            context.Pets.Remove(pet);
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }
