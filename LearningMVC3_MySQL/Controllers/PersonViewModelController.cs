@@ -44,31 +44,9 @@ namespace LearningMVC3_MySQL.Controllers
             if (ModelState.IsValid)
             {
                 var test = person; //Debug
-                Person pax = new Person
-                {
-                    FirstName = person.FirstName,
-                    LastName = person.LastName
-                };
-                Adress adress = new Adress
-                {
-                    Street = person.Street,
-                    City = person.City
-                };
-                Pet pet = new Pet
-                {
-                    Type = person.Type,
-                    Name = person.Name
-                };
 
-                context.Add(adress);
-                context.Add(pet);
-                context.SaveChanges();
-
-                pax.AdressId = adress.Id;
-                pax.PetId = pet.Id;
-                context.Add(pax);
-                context.SaveChanges();
-
+                var plc = new PersonLogicController();
+                plc.CreatePersonView(context, person);
                 return RedirectToAction("Index");
             }
 
