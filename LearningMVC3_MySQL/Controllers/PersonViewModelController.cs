@@ -45,8 +45,31 @@ namespace LearningMVC3_MySQL.Controllers
             {
                 var test = person; //Debug
 
-                var plc = new PersonLogicController();
-                plc.CreatePersonView(context, person);
+                Person pax = new Person
+                {
+                    FirstName = person.FirstName,
+                    LastName = person.LastName
+                };
+                Adress adress = new Adress
+                {
+                    Street = person.Street,
+                    City = person.City
+                };
+                Pet pet = new Pet
+                {
+                    Type = person.Type,
+                    Name = person.Name
+                };
+
+                context.Add(adress);
+                context.Add(pet);
+                context.SaveChanges();
+
+                pax.AdressId = adress.Id;
+                pax.PetId = pet.Id;
+                context.Add(pax);
+                context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -57,9 +80,8 @@ namespace LearningMVC3_MySQL.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-
             Person person = context.Persons.Find(id);
             Adress adress = context.Adresses.Find(person.AdressId);
             Pet pet = context.Pets.Find(person.PetId);
@@ -74,11 +96,10 @@ namespace LearningMVC3_MySQL.Controllers
                 Name = pet.Name
             };
 
-            if (person == null)
+            if(person == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-
 
             return View(pvm);
         }
@@ -89,34 +110,9 @@ namespace LearningMVC3_MySQL.Controllers
         {
             if (ModelState.IsValid)
             {
-                Person pax = new Person
-                {
-                    Id = personViewModel.Id,
-                    FirstName = personViewModel.FirstName,
-                    LastName = personViewModel.LastName
-                };
-                Adress adress = new Adress
-                {
-                    Id = personViewModel.Id,
-                    Street = personViewModel.Street,
-                    City = personViewModel.City
-                };
-                Pet pet = new Pet
-                {
-                    Id = personViewModel.Id,
-                    Type = personViewModel.Type,
-                    Name = personViewModel.Name
-                };
 
-                context.Update(adress);
-                context.Update(pet);
-                context.SaveChanges();
-
-
-                pax.AdressId = adress.Id;
-                pax.PetId = pet.Id;
-                context.Update(pax);
-                context.SaveChanges();
+                var plc = new PersonLogicController();
+                plc.EditPersonView(context, personViewModel);
 
                 return RedirectToAction("Index");
             }
