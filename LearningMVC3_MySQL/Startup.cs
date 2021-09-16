@@ -1,4 +1,5 @@
 using LearningMVC3_MySQL.Data;
+using LearningMVC3_MySQL.Models;
 using LearningMVC3_MySQL.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +36,7 @@ namespace LearningMVC3_MySQL
                     new MySqlServerVersion(new Version(8,0,26))));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             //Email Services //EmailSender

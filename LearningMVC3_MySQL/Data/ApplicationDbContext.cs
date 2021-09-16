@@ -8,7 +8,7 @@ using LearningMVC3_MySQL.ViewModel;
 
 namespace LearningMVC3_MySQL.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -17,6 +17,5 @@ namespace LearningMVC3_MySQL.Data
         public DbSet<Person> Persons { get; set; }
         public DbSet<Adress> Adresses { get; set; }
         public DbSet<Pet> Pets { get; set; }
-        public DbSet<LearningMVC3_MySQL.ViewModel.PersonViewModel> PersonViewModel { get; set; }
     }
 }
