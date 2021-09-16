@@ -17,5 +17,6 @@ namespace LearningMVC3_MySQL.Data
         public DbSet<Person> Persons { get; set; }
         public DbSet<Adress> Adresses { get; set; }
         public DbSet<Pet> Pets { get; set; }
+        public DbSet<LearningMVC3_MySQL.ViewModel.CreateRoleViewModel> CreateRoleViewModel { get; set; }
     }
 }
