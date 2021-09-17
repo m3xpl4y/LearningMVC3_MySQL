@@ -1,4 +1,5 @@
 ﻿using LearningMVC3_MySQL.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace LearningMVC3_MySQL.Controllers
 {
+    
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> rolemanager;
@@ -48,6 +50,7 @@ namespace LearningMVC3_MySQL.Controllers
         }
 
         //List of all Available Roles
+        [Authorize]
         [HttpGet]
         public IActionResult ListRoles()
         {
