@@ -56,7 +56,7 @@ namespace LearningMVC3_MySQL.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Nachname")]
             public string LastName { get; set; }
-            [Required]
+            //[Required]
             [Display(Name = "Geschlecht")]
             public string Gender { get; set; }
             [Required]

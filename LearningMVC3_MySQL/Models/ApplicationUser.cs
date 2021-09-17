@@ -9,6 +9,10 @@ namespace LearningMVC3_MySQL.Models
 {
     public class ApplicationUser : IdentityUser
     {
+
+        private readonly List<string> genders = new List<string>();
+        
+
         [Required]
         [StringLength(60)]
         [Display(Name = "Vorname")]
@@ -21,6 +25,7 @@ namespace LearningMVC3_MySQL.Models
         [StringLength(10)]
         [Display(Name = "Geschlecht")]
         public string Gender { get; set; }
+
         [StringLength(60)]
         [Display(Name = "Stadt")]
         public string City { get; set; }

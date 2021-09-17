@@ -31,11 +31,25 @@ namespace LearningMVC3_MySQL.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
+        //Add to the Class the Attributes from ApplicationUser Class
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Telefonnummer")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Vorname")]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Nachname")]
+            public string LastName { get; set; }
+
+            [Display(Name = "Stadt")]
+            public string City { get; set; }
+
+            [Display(Name = "Geschlecht")]
+            public string Gender { get; set; }
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -44,10 +58,14 @@ namespace LearningMVC3_MySQL.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-
+            //Add to InputModel the Attributes from the InputModel class
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                City = user.City,
+                Gender = user.Gender
             };
         }
 
@@ -66,6 +84,14 @@ namespace LearningMVC3_MySQL.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            //Add here to the to user the Attributes to write into the database
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+            user.City = Input.City;
+            user.Gender = Input.Gender;
+            //now update the user
+            await _userManager.UpdateAsync(user);
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
