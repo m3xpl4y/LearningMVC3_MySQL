@@ -1,4 +1,5 @@
-﻿using LearningMVC3_MySQL.ViewModel;
+﻿using LearningMVC3_MySQL.Models;
+using LearningMVC3_MySQL.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +15,12 @@ namespace LearningMVC3_MySQL.Controllers
     {
         private readonly RoleManager<IdentityRole> rolemanager;
 
-        public AdministrationController(RoleManager<IdentityRole> rolemanager)
+        public UserManager<ApplicationUser> UserManager { get; }
+
+        public AdministrationController(RoleManager<IdentityRole> rolemanager, UserManager<ApplicationUser> userManager)
         {
             this.rolemanager = rolemanager;
+            UserManager = userManager;
         }
 
         //Roles View
@@ -56,6 +60,31 @@ namespace LearningMVC3_MySQL.Controllers
         {
             var roles = rolemanager.Roles;
             return View(roles);
+        }
+
+        public async Task<IActionResult> Editrole(string id)
+        {
+            var role = await rolemanager.FindByIdAsync(id);
+            if(role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with ID = {id} cannot be found";
+                return View("Not Found");
+            }
+
+            var model = new EditRoleViewModel
+            {
+                Id = role.Id,
+                RoleName = role.Name
+            };
+            foreach (var user in UserManager.Users)
+            {
+                if(await UserManager.IsInRoleAsync(user, role.Name))
+                {
+                    model.Users.Add(user.UserName);
+                }
+            }            
+
+            return View(model);
         }
     }
 }
