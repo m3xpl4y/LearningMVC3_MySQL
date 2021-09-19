@@ -83,7 +83,6 @@ namespace LearningMVC3_MySQL.Controllers
                     model.Users.Add(user.UserName);
                 }
             }            
-
             return View(model);
         }
     }
