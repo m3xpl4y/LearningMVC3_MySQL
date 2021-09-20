@@ -61,7 +61,7 @@ namespace LearningMVC3_MySQL.Controllers
             var roles = rolemanager.Roles;
             return View(roles);
         }
-
+        [HttpGet]
         public async Task<IActionResult> Editrole(string id)
         {
             var role = await rolemanager.FindByIdAsync(id);
@@ -95,6 +95,31 @@ namespace LearningMVC3_MySQL.Controllers
             }
 
             return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Editrole(EditRoleViewModel viewModel)
+        {
+            var role = await rolemanager.FindByIdAsync(viewModel.Id);
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with ID = {viewModel.Id} cannot be found";
+                return View("Not Found");
+            }
+            else
+            {
+                role.Name = viewModel.RoleName;
+                var result = await rolemanager.UpdateAsync(role);
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(viewModel);
+            }
         }
     }
 }

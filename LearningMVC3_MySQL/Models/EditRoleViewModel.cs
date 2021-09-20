@@ -13,6 +13,7 @@ namespace LearningMVC3_MySQL.Models
             Users = new List<string>();
         }
         public string Id { get; set; }
+
         [Required(ErrorMessage = "Rollenname ist ein Pflichtfeld!")]
         public string RoleName { get; set; }
         public List<string> Users { get; set; }
