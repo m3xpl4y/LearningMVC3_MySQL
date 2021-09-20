@@ -121,5 +121,37 @@ namespace LearningMVC3_MySQL.Controllers
                 return View(viewModel);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> EditUsersinRole(string roleId)
+        {
+            ViewBag.roleId = roleId;
+            var role = await rolemanager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with ID = {roleId} cannot be found";
+                return View("Not Found");
+            }
+            var model = new List<UserRoleViewModel>();
+            var users = await UserManager.GetUsersInRoleAsync(role.Id);
+            foreach (var user in users)
+            {
+                var userRoleViewModel = new UserRoleViewModel
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                };
+                if(await UserManager.IsInRoleAsync(user, roleId))
+                {
+                    userRoleViewModel.isSelected = true;
+                }
+                else
+                {
+                    userRoleViewModel.isSelected = false;
+                }
+                model.Add(userRoleViewModel);
+            }
+            
+            return View(model);
+        }
     }
 }
