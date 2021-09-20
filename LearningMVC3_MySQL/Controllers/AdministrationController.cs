@@ -76,13 +76,24 @@ namespace LearningMVC3_MySQL.Controllers
                 Id = role.Id,
                 RoleName = role.Name
             };
-            foreach (var user in UserManager.Users)
+
+            //var users = UserManager.Users.ToList();
+            //var usersInRole = UserManager.Users.ToList();
+
+            //foreach (var user in users)
+            //{
+            //    if (await UserManager.IsInRoleAsync(user, role.Name))
+            //    {
+            //        usersInRole.Add(user);
+            //    }
+            //}
+
+            var users = await UserManager.GetUsersInRoleAsync(role.Name);
+            foreach (var user in users)
             {
-                if(await UserManager.IsInRoleAsync(user, role.Name))
-                {
-                    model.Users.Add(user.UserName);
-                }
-            }            
+                model.Users.Add(user.UserName);
+            }
+
             return View(model);
         }
     }
