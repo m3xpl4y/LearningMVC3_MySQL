@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LearningMVC3_MySQL.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> rolemanager;
@@ -124,6 +125,7 @@ namespace LearningMVC3_MySQL.Controllers
         public async Task<IActionResult> EditUsersinRole(string roleId)
         {
             ViewBag.roleId = roleId;
+
             var role = await rolemanager.FindByIdAsync(roleId);
             if (role == null)
             {
@@ -138,20 +140,16 @@ namespace LearningMVC3_MySQL.Controllers
                 {
                     UserId = user.Id,
                     UserName = user.UserName,
+                    isSelected = await UserManager.IsInRoleAsync(user, role.Name)
                 };
-                if(await UserManager.IsInRoleAsync(user, roleId))
-                {
-                    userRoleViewModel.isSelected = true;
-                }
-                else
-                {
-                    userRoleViewModel.isSelected = false;
-                }
                 model.Add(userRoleViewModel);
+                var test = userRoleViewModel.isSelected;
+                Debug.WriteLine(test);
             }
             
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleViewModel> model, string roleId)
         {
@@ -169,10 +167,12 @@ namespace LearningMVC3_MySQL.Controllers
                 if(model[i].isSelected && !(await UserManager.IsInRoleAsync(user, role.Name)))
                 {
                     identityResult = await UserManager.AddToRoleAsync(user, role.Name);
+                    Debug.WriteLine("added");
                 }
                 else if (!model[i].isSelected && await UserManager.IsInRoleAsync(user, role.Name))
                 {
                     identityResult = await UserManager.RemoveFromRoleAsync(user, role.Name);
+                    Debug.WriteLine("removed");
                 }
                 else
                 {

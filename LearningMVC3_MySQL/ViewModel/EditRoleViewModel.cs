@@ -10,12 +10,13 @@ namespace LearningMVC3_MySQL.Models
     {
         public EditRoleViewModel()
         {
-            Users = new List<string>();
+            // Users = new List<string>(); 
+            // Wird in Zeile 20 Initialisiert!
         }
         public string Id { get; set; }
 
         [Required(ErrorMessage = "Rollenname ist ein Pflichtfeld!")]
         public string RoleName { get; set; }
-        public List<string> Users { get; set; }
+        public List<string> Users { get; set; } = new List<string>();
     }
 }
