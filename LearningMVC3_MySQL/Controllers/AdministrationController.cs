@@ -125,13 +125,15 @@ namespace LearningMVC3_MySQL.Controllers
         public async Task<IActionResult> EditUsersinRole(string roleId)
         {
             ViewBag.roleId = roleId;
-
+            
             var role = await rolemanager.FindByIdAsync(roleId);
             if (role == null)
             {
                 ViewBag.ErrorMessage = $"Role with ID = {roleId} cannot be found";
                 return View("Not Found");
             }
+            ViewBag.roleName = role.Name;
+
             var model = new List<UserRoleViewModel>();
 
             foreach (var user in UserManager.Users.ToList())
@@ -146,7 +148,6 @@ namespace LearningMVC3_MySQL.Controllers
                 var test = userRoleViewModel.isSelected;
                 Debug.WriteLine(test);
             }
-            
             return View(model);
         }
 

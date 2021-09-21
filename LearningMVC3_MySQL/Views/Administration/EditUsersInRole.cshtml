@@ -4,11 +4,13 @@
 @*Retrieve the roleId from the ViewBag*@
 @{ 
     var roleId = ViewBag.roleId;
+    var roleName = ViewBag.roleName;
 }
 <form method="post">
     <div class="card">
         <div class="card-header">
             <h3 class="card-header">Add or Remove Users from Role</h3>
+            <h4 class="card-header"><label>Role: </label>@roleName</h4>
         </div>
         <div class="card-body">
             
