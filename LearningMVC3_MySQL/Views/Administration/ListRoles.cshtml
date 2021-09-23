@@ -1,9 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model IEnumerable<IdentityRole>
 
-@{ 
+@{
     ViewBag.Title = "All Rolles";
 }
+
 
 <h1>All Roles</h1>
 
@@ -20,8 +21,18 @@
                 <h5 class="card-title">@role.Name</h5>
             </div>
             <div class="card-footer">
-                <a class="btn btn-primary" asp-action="Editrole" asp-controller="Administration" asp-route-id="@role.Id">Edit</a>
-                <a class="btn btn-danger">Delete</a>
+                <div style="float: left">
+                    <a class="btn btn-primary" asp-action="Editrole" asp-controller="Administration" asp-route-id="@role.Id">Edit</a>
+                </div>
+                @if (role.Id == "eca96f13-3bb1-425b-8f1d-233eec7b7a9b" || role.Id == "985d85ad-8444-4d66-8fcb-a6f1895517e7" || role.Id == "162cccc2-ee20-4d50-afb6-872452793235" || role.Id == "4d230178-10a0-4bda-b2f2-79e1a09c7010")
+                {
+                }
+                else
+                {
+                    <a name="@role.Id" class="btn btn-danger" onclick="hideButton(this)" id="@role.Id" style="color:white; margin-left:5px">Delete</a>
+                    <a name="@role.Id" asp-action="DeleteRole" asp-controller="Administration" asp-route-id="@role.Id" class="btn btn-danger" style="display: none; margin-left: 5px" id="{@role.Id}yes">YES</a>
+                    <a name="@role.Id" onclick="showButton(this)" class="btn btn-danger" id="{@role.Id}no" style="display: none; color: white">NO</a>
+                }
             </div>
         </div>
     }
@@ -39,4 +50,30 @@ else
             <a class="btn btn-primary" asp-controller="administration" asp-action="CreateRole">Create Role</a>
         </div>
     </div>
+}
+
+@section Scripts
+{
+    <script>
+        function hideButton(elmnt) {
+            var buttonList = document.getElementsByName(elmnt.name);
+            for (var i = 0; i < buttonList.length; i++) {
+                if (i == 0) {
+                    buttonList[i].style.display = "none";
+                } else {
+                    buttonList[i].style.display = "";
+                }
+            }
+        }
+        function showButton(elmnt) {
+            var buttonList = document.getElementsByName(elmnt.name);
+            for (var i = 0; i < buttonList.length; i++) {
+                if (i == 0) {
+                    buttonList[i].style.display = "";
+                } else {
+                    buttonList[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 }

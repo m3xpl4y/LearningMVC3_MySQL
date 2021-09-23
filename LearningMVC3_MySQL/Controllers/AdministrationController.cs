@@ -1,4 +1,5 @@
-﻿using LearningMVC3_MySQL.Models;
+﻿using LearningMVC3_MySQL.Data;
+using LearningMVC3_MySQL.Models;
 using LearningMVC3_MySQL.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,11 +18,15 @@ namespace LearningMVC3_MySQL.Controllers
         private readonly RoleManager<IdentityRole> rolemanager;
 
         public UserManager<ApplicationUser> UserManager { get; }
+        public ApplicationDbContext Context { get; }
 
-        public AdministrationController(RoleManager<IdentityRole> rolemanager, UserManager<ApplicationUser> userManager)
+        public AdministrationController(RoleManager<IdentityRole> rolemanager, 
+            UserManager<ApplicationUser> userManager,
+            ApplicationDbContext context)
         {
             this.rolemanager = rolemanager;
-            UserManager = userManager;
+            this.UserManager = userManager;
+            this.Context = context;
         }
 
         //Roles View
@@ -77,17 +82,6 @@ namespace LearningMVC3_MySQL.Controllers
                 RoleName = role.Name
             };
 
-            //var users = UserManager.Users.ToList();
-            //var usersInRole = UserManager.Users.ToList();
-
-            //foreach (var user in users)
-            //{
-            //    if (await UserManager.IsInRoleAsync(user, role.Name))
-            //    {
-            //        usersInRole.Add(user);
-            //    }
-            //}
-
             var users = await UserManager.GetUsersInRoleAsync(role.Name);
             foreach (var user in users)
             {
@@ -132,6 +126,7 @@ namespace LearningMVC3_MySQL.Controllers
                 ViewBag.ErrorMessage = $"Role with ID = {roleId} cannot be found";
                 return View("Not Found");
             }
+
             ViewBag.roleName = role.Name;
 
             var model = new List<UserRoleViewModel>();
@@ -192,8 +187,16 @@ namespace LearningMVC3_MySQL.Controllers
                         return RedirectToAction("EditRole", new { Id = roleId });
                 }
             }
-
             return RedirectToAction("EditRole", new { Id = roleId });
+        }
+       
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = Context.Roles.Where(r => r.Id == id).FirstOrDefault();
+            Context.Roles.Remove(role);
+            Context.SaveChanges();
+
+            return RedirectToAction("ListRoles");
         }
     }
 }
