@@ -12,12 +12,16 @@ function toggleButton() {
     if (x.style.display === "block") {
         x.style.display = "none";
         y.style.display = "block";
-        
+        console.log("dark mode");
+
     } else {
         x.style.display = "block";
         y.style.display = "none";
+        console.log("light mode");
     }
 }
+
+
 
 //Display and Hide buttons in Views/Administration/ListRoles.cshtml
 function hideButton(elmnt) {
