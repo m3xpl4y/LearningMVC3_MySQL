@@ -22,7 +22,7 @@ namespace LearningMVC3_MySQL.Services
 
             MailMessage message = new MailMessage();
 
-            message.From = new MailAddress("admin@anothertest.app");
+            message.From = new MailAddress("admin@LearningMVC3_MySQL.ap");
             message.Subject = subject;
             message.To.Add(new MailAddress(email));
             message.Body = "<html><body> " + htmlMessage + " </body></html>";

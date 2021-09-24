@@ -5,10 +5,10 @@
     
     @if (User.Identity.IsAuthenticated)
     {
-        Layout = "/Views/Shared/_Layout-light.cshtml";
+        Layout = "/Views/Shared/_Layout-dark.cshtml";
     }
     else
     {
-        Layout = "/Views/Shared/_Layout-quartz.cshtml";
+        Layout = "/Views/Shared/_Layout-light.cshtml";
     }
 }
