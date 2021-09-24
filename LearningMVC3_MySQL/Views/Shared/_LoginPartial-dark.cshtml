@@ -29,21 +29,3 @@ else
     </li>
 }
 </ul>
-
-@section Scripts
-{
-    <script type="text/javascript">
-        document.onload(toggleButton());
-        function myFunction() {
-            var x = document.getElementById("darkMode");
-            var y = document.getElementById("lightMode");
-            if (x.style.display === "block") {
-                x.style.display = "none";
-                y.style.display = "block";
-            } else {
-                x.style.display = "block";
-                y.style.display = "none";
-            }
-        }
-    </script>
-}
