@@ -190,7 +190,7 @@ namespace LearningMVC3_MySQL.Controllers
             return RedirectToAction("EditRole", new { Id = roleId });
         }
        
-        public async Task<IActionResult> DeleteRole(string id)
+        public IActionResult DeleteRole(string id)
         {
             var role = Context.Roles.Where(r => r.Id == id).FirstOrDefault();
             Context.Roles.Remove(role);
