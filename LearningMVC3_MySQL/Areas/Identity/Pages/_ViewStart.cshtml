@@ -1,3 +1,14 @@
-﻿@{
-    Layout = "/Views/Shared/_Layout.cshtml";
+﻿@*
+    This is the _ViewStart for the Identity Pages
+*@
+@{
+    
+    @if (User.Identity.IsAuthenticated)
+    {
+        Layout = "/Views/Shared/_Layout-light.cshtml";
+    }
+    else
+    {
+        Layout = "/Views/Shared/_Layout-quartz.cshtml";
+    }
 }

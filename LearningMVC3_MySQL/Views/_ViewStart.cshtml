@@ -1,3 +1,13 @@
-﻿@{
+﻿@*
+    This is the _ViewStart for outside the Identity Pages
+*@
+@{
+    @if (User.Identity.IsAuthenticated)
+    {
         Layout = "_Layout-dark";
-}
+    }
+    else
+    {
+        Layout = "_Layout-light";
+    }
+    }
