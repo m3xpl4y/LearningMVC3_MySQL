@@ -1,13 +1,24 @@
-﻿@*
+﻿@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor _httpContextAccessor
+@*
     This is the _ViewStart for outside the Identity Pages
 *@
 @{
-    @if (User.Identity.IsAuthenticated)
-    {
-        Layout = "_Layout-dark";
-    }
-    else
+
+
+    var cookieValue = _httpContextAccessor.HttpContext.Request.Cookies["Theme"];
+
+    @if(cookieValue == null)
     {
         Layout = "_Layout-light";
+    }
+
+    @if (cookieValue == "lightMode")
+    {
+        Layout = "_Layout-light";
+    }
+    else if(cookieValue == "darkMode")
+    {
+        Layout = "_Layout-dark";
     }
 }

@@ -20,7 +20,7 @@
                         <input type="hidden" asp-for="@Model[i].UserId" />
                         <input type="hidden" asp-for="@Model[i].UserName" />
 
-                        <input asp-for="@Model[i].isSelected" class="form-check-input"/>
+                        <input asp-for="@Model[i].isSelected" type="checkbox" class="form-check-input"/>
 
                         <label class="form-check-label" asp-for="@Model[i].isSelected" >
                             @Model[i].UserName

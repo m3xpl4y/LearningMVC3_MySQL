@@ -41,6 +41,7 @@ namespace LearningMVC3_MySQL.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("FirstName, LastName, Street, City, Type, Name")] PersonViewModel person)
         {
+            
             if (ModelState.IsValid)
             {
                 var test = person; //Debug

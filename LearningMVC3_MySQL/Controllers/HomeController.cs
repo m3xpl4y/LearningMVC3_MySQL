@@ -1,5 +1,6 @@
 ﻿using LearningMVC3_MySQL.Models;
 using LearningMVC3_MySQL.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,13 +15,26 @@ namespace LearningMVC3_MySQL.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public IHttpContextAccessor _httpContextAccessor { get; }
+
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
+            string value = "darkMode";
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddDays(1);
+
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("Theme", value, options);
+
+            var valueOfThemeCookie = _httpContextAccessor.HttpContext.Request.Cookies["Theme"];
+            var cookieValue = Request.Cookies["Theme"];
+
             return View();
         }
 
